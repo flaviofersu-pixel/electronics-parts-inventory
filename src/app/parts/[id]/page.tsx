@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BackLink } from "@/components/BackLink";
 import { LabelChip } from "@/components/LabelChip";
@@ -80,6 +81,19 @@ export default async function PartPage({ params }: PartPageProps) {
               </a>
             </section>
           )}
+
+          <div className="mt-3 flex flex-wrap gap-3 border-t border-border pt-5">
+            <Link
+              href={`/parts/${part.id}/edit`}
+              className="inline-flex h-11 items-center gap-2 rounded-lg bg-accent px-5 font-semibold text-accent-foreground hover:bg-accent-hover"
+            >
+              <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+              </svg>
+              Edit part
+            </Link>
+          </div>
         </div>
       </div>
     </main>

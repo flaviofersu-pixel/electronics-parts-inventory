@@ -11,6 +11,15 @@ export function SiteHeader() {
             Parts Inventory
           </span>
         </Link>
+        <Link
+          href="/parts/new"
+          className="inline-flex h-11 items-center gap-2 rounded-lg bg-accent px-4.5 font-semibold text-accent-foreground transition-colors hover:bg-accent-hover"
+        >
+          <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Add part
+        </Link>
       </div>
     </header>
   );

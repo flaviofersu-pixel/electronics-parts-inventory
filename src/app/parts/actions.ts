@@ -123,3 +123,16 @@ export async function updatePart(
   revalidatePath(`/parts/${partId}`);
   redirect(`/parts/${partId}`);
 }
+
+export async function deletePart(partId: string): Promise<void> {
+  const supabase = await createClient();
+  // Its part_labels rows go too, thanks to "on delete cascade".
+  const { error } = await supabase.from(PARTS_TABLE).delete().eq("id", partId);
+
+  if (error) {
+    throw new Error(`Could not delete part: ${error.message}`);
+  }
+
+  revalidatePath("/");
+  redirect("/");
+}

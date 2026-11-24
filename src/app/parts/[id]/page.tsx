@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BackLink } from "@/components/BackLink";
+import { DeletePartButton } from "@/components/DeletePartButton";
 import { LabelChip } from "@/components/LabelChip";
 import { PartImage } from "@/components/PartImage";
 import { formatCost } from "@/lib/format";
@@ -93,6 +94,7 @@ export default async function PartPage({ params }: PartPageProps) {
               </svg>
               Edit part
             </Link>
+            <DeletePartButton partId={part.id} partName={part.name} />
           </div>
         </div>
       </div>

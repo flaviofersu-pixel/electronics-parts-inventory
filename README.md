@@ -5,21 +5,6 @@ tag them with labels (screen, sensor, cable…) and filter by label.
 
 **Stack:** Next.js (App Router, TypeScript) + Tailwind CSS, Supabase (Postgres + Auth), hosted on Vercel.
 
-## Run it locally
-
-1. Install [Node.js](https://nodejs.org) 20 or newer.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Copy `.env.example` to `.env.local` and fill in your Supabase URL and anon key
-   (Supabase dashboard → Project Settings → API).
-4. Start the dev server:
-   ```bash
-   npm run dev
-   ```
-   and open http://localhost:3000.
-
 ## Database
 
 - `supabase/schema.sql` — the full schema (tables, links, row-level security).

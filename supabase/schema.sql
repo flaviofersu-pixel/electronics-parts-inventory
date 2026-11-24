@@ -1,6 +1,4 @@
 -- Full database schema for the parts inventory.
--- Reference for a fresh Supabase project: paste into SQL Editor and Run.
--- (For the project you already built by hand, run fixes-2026-11-24.sql instead.)
 
 create table public.parts (
   id          uuid primary key default gen_random_uuid(),

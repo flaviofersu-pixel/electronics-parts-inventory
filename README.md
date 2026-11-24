@@ -11,6 +11,7 @@ tag them with labels (screen, sensor, cable…) and filter by label.
 - Parts grid with search by name and filter by label
 - Part detail page with image, cost, stock and description
 - Add, edit and delete parts, with a label picker
+- Import from AI: paste the JSON an AI chat gives you for a photo of a part, and the form fills itself in
 - Email and password login: only your own account can see and change the inventory
 
 ## Getting started
@@ -32,6 +33,26 @@ tag them with labels (screen, sensor, cable…) and filter by label.
    ```bash
    npm run dev
    ```
+
+## Import a part from an AI chat
+
+1. Open **Add part** and expand **Import from AI**.
+2. Click **Copy prompt** and send it, together with a photo of your part, to any AI chat.
+3. Paste the JSON it answers with and click **Fill form**.
+4. Check the values, add the cost and save.
+
+The expected JSON looks like this:
+
+```json
+{
+  "name": "SSD1306 OLED display 0.96\"",
+  "description": "Small 128x64 monochrome OLED screen that talks over I2C.",
+  "labels": ["screen", "I2C"],
+  "cost": null,
+  "quantity": 1,
+  "image_url": ""
+}
+```
 
 ## Project structure
 

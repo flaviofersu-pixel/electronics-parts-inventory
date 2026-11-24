@@ -37,20 +37,21 @@ tag them with labels (screen, sensor, cable…) and filter by label.
 ## Import a part from an AI chat
 
 1. Open **Add part** and expand **Import from AI**.
-2. Click **Copy prompt** and send it, together with a photo of your part, to any AI chat.
+2. Click **Copy prompt** and send it, together with a photo of your part, to an AI chat that can search
+   the web. It looks up the price in a Dutch webshop and a product image link.
 3. Paste the JSON it answers with and click **Fill form**.
-4. Check the values, add the cost and save.
+4. Check the values and save.
 
 The expected JSON looks like this:
 
 ```json
 {
   "name": "SSD1306 OLED display 0.96\"",
-  "description": "Small 128x64 monochrome OLED screen that talks over I2C.",
+  "description": "Small 128x64 monochrome OLED screen that talks over I2C. Price from Bits & Parts.",
   "labels": ["screen", "I2C"],
-  "cost": null,
+  "cost": 4.95,
   "quantity": 1,
-  "image_url": ""
+  "image_url": "https://example-shop.nl/images/ssd1306.jpg"
 }
 ```
 

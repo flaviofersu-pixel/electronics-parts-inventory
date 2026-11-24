@@ -47,9 +47,9 @@ export function ImportPanel({ onImport }: ImportPanelProps) {
 
       <div className="flex flex-col gap-5 border-t border-border px-6 pt-5 pb-6">
         <ol className="flex list-decimal flex-col gap-1.5 pl-5 text-sm text-muted">
-          <li>Copy the prompt and send it with a photo of your part to an AI chat.</li>
+          <li>Copy the prompt and send it with a photo of your part to an AI chat that can search the web.</li>
           <li>Paste the JSON it answers with below and click &quot;Fill form&quot;.</li>
-          <li>Check the form, add the cost, and save.</li>
+          <li>Check the form, especially the price and image, and save.</li>
         </ol>
 
         <button

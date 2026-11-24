@@ -5,6 +5,45 @@ tag them with labels (screen, sensor, cable…) and filter by label.
 
 **Stack:** Next.js (App Router, TypeScript) + Tailwind CSS, Supabase (Postgres + Auth), hosted on Vercel.
 
+## Features
+
+- Dark theme, works on phone and desktop
+- Parts grid with search by name and filter by label
+- Part detail page with image, cost, stock and description
+- Add, edit and delete parts, with a label picker
+- Magic link login: only your own account can see and change the inventory
+
+## Getting started
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create `.env.local` with your Supabase project values (Project Settings → API Keys):
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-or-publishable-key
+   ```
+3. Run `supabase/schema.sql` in the Supabase SQL Editor (skip if the tables already exist).
+4. In Supabase → Authentication:
+   - **Users → Add user**: create your own account (sign-ups from the login page are turned off).
+   - **URL Configuration**: set the Site URL to your Vercel URL and add
+     `http://localhost:3000/auth/callback` and `https://<your-vercel-url>/auth/callback` as redirect URLs.
+5. Start the dev server and open http://localhost:3000:
+   ```bash
+   npm run dev
+   ```
+
+## Project structure
+
+| Path | What it holds |
+| --- | --- |
+| `src/app` | Pages: parts grid, part detail, add/edit form, login |
+| `src/app/parts/actions.ts` | Server actions to create, update and delete parts |
+| `src/components` | UI components (part card, label chip, filters, form) |
+| `src/lib` | Supabase clients, data loading, validation, constants |
+| `src/middleware.ts` | Keeps the session fresh and sends logged-out visitors to `/login` |
+
 ## Database
 
 - `supabase/schema.sql` — the full schema (tables, links, row-level security).

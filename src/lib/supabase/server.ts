@@ -21,7 +21,7 @@ export async function createClient() {
             );
           } catch {
             // Called from a server component, where cookies are read-only.
-            // Safe to ignore for now; login middleware (added later) refreshes the session.
+            // Safe to ignore: the middleware refreshes the session instead.
           }
         },
       },

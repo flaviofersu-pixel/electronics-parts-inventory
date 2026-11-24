@@ -8,7 +8,6 @@ tag them with labels (screen, sensor, cable…) and filter by label.
 ## Database
 
 - `supabase/schema.sql` — the full schema (tables, links, row-level security).
-- `supabase/fixes-2026-11-24.sql` — one-time fixes for the tables first created by hand.
 
 ## Data model
 

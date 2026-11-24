@@ -1,39 +1,26 @@
 "use server";
 
-import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export type LoginState = {
-  status: "idle" | "sent" | "error";
-  message: string;
+  error: string;
 };
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export async function sendMagicLink(
-  _previousState: LoginState,
-  formData: FormData,
-): Promise<LoginState> {
+export async function logIn(_previousState: LoginState, formData: FormData): Promise<LoginState> {
   const email = String(formData.get("email") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
 
-  if (!EMAIL_PATTERN.test(email)) {
-    return { status: "error", message: "Enter a valid email address." };
+  if (!email || !password) {
+    return { error: "Enter your email and password." };
   }
 
-  const origin = (await headers()).get("origin") ?? "";
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback`,
-      // Only existing users can log in: this is a private inventory.
-      shouldCreateUser: false,
-    },
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    return { status: "error", message: "Could not send the login link. Try again." };
+    return { error: "Wrong email or password." };
   }
 
-  return { status: "sent", message: `Check ${email} for your login link.` };
+  redirect("/");
 }

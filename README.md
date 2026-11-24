@@ -11,7 +11,7 @@ tag them with labels (screen, sensor, cable…) and filter by label.
 - Parts grid with search by name and filter by label
 - Part detail page with image, cost, stock and description
 - Add, edit and delete parts, with a label picker
-- Magic link login: only your own account can see and change the inventory
+- Email and password login: only your own account can see and change the inventory
 
 ## Getting started
 
@@ -26,9 +26,8 @@ tag them with labels (screen, sensor, cable…) and filter by label.
    ```
 3. Run `supabase/schema.sql` in the Supabase SQL Editor (skip if the tables already exist).
 4. In Supabase → Authentication:
-   - **Users → Add user**: create your own account (sign-ups from the login page are turned off).
-   - **URL Configuration**: set the Site URL to your Vercel URL and add
-     `http://localhost:3000/auth/callback` and `https://<your-vercel-url>/auth/callback` as redirect URLs.
+   - **Users → Add user → Create new user**: enter your email and a password and tick
+     "Auto Confirm User". That is the account you log in with; the app has no sign-up page.
 5. Start the dev server and open http://localhost:3000:
    ```bash
    npm run dev

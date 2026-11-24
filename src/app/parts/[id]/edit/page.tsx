@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { BackLink } from "@/components/BackLink";
 import { PartForm } from "@/components/PartForm";
+import { partToDraft } from "@/lib/partDraft";
 import { getLabels, getPart } from "@/lib/parts";
 import { updatePart } from "../../actions";
 
@@ -25,7 +26,7 @@ export default async function EditPartPage({ params }: EditPartPageProps) {
       <PartForm
         action={updatePart.bind(null, part.id)}
         existingLabels={labels.map((label) => label.name)}
-        part={part}
+        initialValues={partToDraft(part)}
         submitText="Save changes"
         cancelHref={partHref}
       />

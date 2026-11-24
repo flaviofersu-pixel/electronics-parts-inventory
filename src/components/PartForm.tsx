@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useActionState, useState } from "react";
-import { DEFAULT_QUANTITY } from "@/lib/constants";
 import type { PartFormErrors } from "@/lib/validation";
-import type { PartWithLabels } from "@/lib/types";
+import { EMPTY_PART_DRAFT } from "@/lib/partDraft";
+import type { PartDraft } from "@/lib/types";
 import { FormField, INPUT_CLASSES } from "./FormField";
 import { LabelPicker } from "./LabelPicker";
 import { PartImage } from "./PartImage";
@@ -19,17 +19,23 @@ export type PartFormState = {
 type PartFormProps = {
   action: (state: PartFormState, formData: FormData) => Promise<PartFormState>;
   existingLabels: string[];
-  part?: PartWithLabels;
+  initialValues?: PartDraft;
   submitText: string;
   cancelHref: string;
 };
 
 const INITIAL_STATE: PartFormState = { errors: {} };
 
-export function PartForm({ action, existingLabels, part, submitText, cancelHref }: PartFormProps) {
+export function PartForm({
+  action,
+  existingLabels,
+  initialValues = EMPTY_PART_DRAFT,
+  submitText,
+  cancelHref,
+}: PartFormProps) {
   const [state, formAction, isPending] = useActionState(action, INITIAL_STATE);
-  const [imageUrl, setImageUrl] = useState(part?.image_url ?? "");
-  const [labels, setLabels] = useState(part?.labels.map((label) => label.name) ?? []);
+  const [imageUrl, setImageUrl] = useState(initialValues.imageUrl);
+  const [labels, setLabels] = useState(initialValues.labels);
   const { errors, values } = state;
 
   return (
@@ -44,7 +50,7 @@ export function PartForm({ action, existingLabels, part, submitText, cancelHref 
             id="name"
             name="name"
             type="text"
-            defaultValue={values?.name ?? part?.name}
+            defaultValue={values?.name ?? initialValues.name}
             aria-invalid={Boolean(errors.name)}
             className={INPUT_CLASSES}
           />
@@ -55,7 +61,7 @@ export function PartForm({ action, existingLabels, part, submitText, cancelHref 
             id="description"
             name="description"
             rows={3}
-            defaultValue={values?.description ?? part?.description ?? ""}
+            defaultValue={values?.description ?? initialValues.description}
             aria-invalid={Boolean(errors.description)}
             className={`${INPUT_CLASSES} h-auto resize-y py-3 leading-normal`}
           />
@@ -68,7 +74,7 @@ export function PartForm({ action, existingLabels, part, submitText, cancelHref 
               name="cost"
               type="text"
               inputMode="decimal"
-              defaultValue={values?.cost ?? part?.cost ?? ""}
+              defaultValue={values?.cost ?? initialValues.cost}
               aria-invalid={Boolean(errors.cost)}
               className={`${INPUT_CLASSES} font-mono`}
             />
@@ -79,7 +85,7 @@ export function PartForm({ action, existingLabels, part, submitText, cancelHref 
               name="quantity"
               type="number"
               min={0}
-              defaultValue={values?.quantity ?? part?.quantity ?? DEFAULT_QUANTITY}
+              defaultValue={values?.quantity ?? initialValues.quantity}
               aria-invalid={Boolean(errors.quantity)}
               className={`${INPUT_CLASSES} font-mono`}
             />

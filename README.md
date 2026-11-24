@@ -11,6 +11,7 @@ tag them with labels (screen, sensor, cable…) and filter by label.
 - Parts grid with search by name and filter by label
 - Part detail page with image, cost, stock and description
 - Add, edit and delete parts, with a label picker
+- No duplicates: adding a part you already have (same name, any case) adds its quantity to the stock
 - Import from AI: paste the JSON an AI chat gives you for a photo of a part, and the form fills itself in
 - Email and password login: only your own account can see and change the inventory
 

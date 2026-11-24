@@ -3,13 +3,20 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { PartFormState } from "@/components/PartForm";
-import { LABELS_TABLE, PART_LABELS_TABLE, PARTS_TABLE } from "@/lib/constants";
+import {
+  ADDED_STOCK_PARAM,
+  LABELS_TABLE,
+  PART_LABELS_TABLE,
+  PARTS_TABLE,
+} from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 import { parsePartForm, type PartInput } from "@/lib/validation";
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>;
 
 const SAVE_FAILED_MESSAGE = "Saving failed. Check your connection and try again.";
+
+type ExistingPart = { id: string; quantity: number };
 
 function readFormValues(formData: FormData): PartFormState["values"] {
   return {
@@ -28,6 +35,29 @@ function toPartRow(input: PartInput) {
     image_url: input.imageUrl,
     quantity: input.quantity,
   };
+}
+
+// Escapes the characters that ilike treats as wildcards, so the name matches literally.
+function escapeLikePattern(value: string): string {
+  return value.replace(/[\\%_]/g, (character) => `\\${character}`);
+}
+
+// Finds a part with the same name, ignoring upper and lower case.
+async function findPartByName(
+  supabase: SupabaseClient,
+  name: string,
+): Promise<ExistingPart | null> {
+  const { data, error } = await supabase
+    .from(PARTS_TABLE)
+    .select("id, quantity")
+    .ilike("name", escapeLikePattern(name))
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Could not check for an existing part: ${error.message}`);
+  }
+  return data;
 }
 
 // Creates any new labels, then replaces the part's links with the given labels.
@@ -75,6 +105,22 @@ export async function createPart(
   }
 
   const supabase = await createClient();
+  const existingPart = await findPartByName(supabase, result.data.name);
+  if (existingPart) {
+    const { error: stockError } = await supabase
+      .from(PARTS_TABLE)
+      .update({ quantity: existingPart.quantity + result.data.quantity })
+      .eq("id", existingPart.id);
+
+    if (stockError) {
+      return { errors: {}, message: SAVE_FAILED_MESSAGE, values: readFormValues(formData) };
+    }
+
+    revalidatePath("/");
+    revalidatePath(`/parts/${existingPart.id}`);
+    redirect(`/parts/${existingPart.id}?${ADDED_STOCK_PARAM}=${result.data.quantity}`);
+  }
+
   const { data: part, error } = await supabase
     .from(PARTS_TABLE)
     .insert(toPartRow(result.data))

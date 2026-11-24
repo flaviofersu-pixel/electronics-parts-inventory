@@ -8,6 +8,9 @@ export const MAX_DESCRIPTION_LENGTH = 1000;
 export const MAX_LABEL_LENGTH = 30;
 export const MAX_LABELS_PER_PART = 10;
 
+// Query parameter that tells the detail page how many units were added to an existing part.
+export const ADDED_STOCK_PARAM = "added";
+
 export const CURRENCY_CODE = "EUR";
 export const LOCALE = "nl-NL";
 

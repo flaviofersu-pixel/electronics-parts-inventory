@@ -4,12 +4,33 @@ import { BackLink } from "@/components/BackLink";
 import { DeletePartButton } from "@/components/DeletePartButton";
 import { LabelChip } from "@/components/LabelChip";
 import { PartImage } from "@/components/PartImage";
+import { ADDED_STOCK_PARAM } from "@/lib/constants";
 import { formatCost } from "@/lib/format";
 import { getPart } from "@/lib/parts";
 
 type PartPageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
+
+// Reads how many units were just added to this part, if any.
+function readAddedStock(value: string | string[] | undefined): number | null {
+  const addedStock = Number(Array.isArray(value) ? value[0] : value);
+  return Number.isInteger(addedStock) && addedStock > 0 ? addedStock : null;
+}
+
+function AddedStockNotice({ addedStock }: { addedStock: number }) {
+  const unitText = addedStock === 1 ? "1 unit" : `${addedStock} units`;
+  return (
+    <p
+      role="status"
+      className="rounded-xl border border-accent-ring bg-surface px-4 py-3 text-sm"
+    >
+      You already had this part, so {unitText} went to its stock instead of making a new
+      one.
+    </p>
+  );
+}
 
 function StatTile({ label, value }: { label: string; value: string }) {
   return (
@@ -26,8 +47,9 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default async function PartPage({ params }: PartPageProps) {
+export default async function PartPage({ params, searchParams }: PartPageProps) {
   const { id } = await params;
+  const addedStock = readAddedStock((await searchParams)[ADDED_STOCK_PARAM]);
   const part = await getPart(id);
 
   if (!part) {
@@ -37,6 +59,7 @@ export default async function PartPage({ params }: PartPageProps) {
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-6 px-6 pt-6 pb-16">
       <BackLink href="/">All parts</BackLink>
+      {addedStock !== null && <AddedStockNotice addedStock={addedStock} />}
 
       <div className="flex flex-wrap items-start gap-10">
         <PartImage
